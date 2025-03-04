@@ -31,8 +31,8 @@ bounds = [[-0.2, 0.2]] * 4
 deadzone = [[-0.11, 0.11]] * 4
 
 hardware = HovercraftHardware(
-    arduino_port='/dev/ttyUSB1',
-    vectornav_port='/dev/ttyUSB0'
+    arduino_port='/dev/ttyUSB0',
+    vectornav_port='/dev/ttyUSB1'
 )
 
 anchovy = AUV(
@@ -49,16 +49,16 @@ anchovy = AUV(
                 Motor(
                     direction,
                     loc,
-                    lambda magnitude: hardware.set_motor(i, magnitude),
-                    lambda: hardware.initialize_motor(i),
+                    lambda magnitude, i=i: hardware.set_motor(i+2, magnitude),
+                    lambda i=i: hardware.initialize_motor(i+2),
                     Motor.Range(bounds[i][0], bounds[i][1]),
                     Motor.Range(-deadzone[i][0], deadzone[i][1])
                     )
                 for i, (loc, direction) in enumerate(zip(motor_locations, motor_directions))
                 ]
         ),
-        sensors = SensorInterface(imu=hardware.imu(), depth=hardware.depth()),
-        pin_kill = lambda: None
+        sensors = SensorInterface(imu=hardware.imu, depth=hardware.depth),
+        pin_kill = hardware.kill
     )
 
 anchovy.register_subtask(HeadingPID(0, 0.03, 0.0, 0.01))

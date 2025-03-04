@@ -6,7 +6,8 @@ from ezauv.hardware.sensor_interface import ImuInterface, DepthInterface
 
 class VectorNavIMU(ImuInterface):
     def __init__(self, port):
-        self.vectornav = VnSensor(port, 115200)
+        self.vectornav = VnSensor()
+        self.vectornav.connect(port, 115200)
         self.calibrated_heading = 0
 
     def get_accelerations(self) -> np.ndarray:

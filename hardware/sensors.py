@@ -39,3 +39,9 @@ class FakeDepth(DepthInterface):
     
     def get_depth(self) -> float:
         return 0.
+    
+    def initialize(self) -> None:
+        pass
+
+    def overview(self) -> None:
+        self.log("remember to fix this later")

@@ -9,6 +9,7 @@ from ezauv.mission.tasks.subtasks import HeadingPID
 from ezauv.mission import Path
 
 from hardware_interface import HovercraftHardware
+from hover_task import Hover
 
 
 motor_locations = [
@@ -62,7 +63,7 @@ anchovy = AUV(
     )
 
 anchovy.register_subtask(HeadingPID(0, 0.03, 0.0, 0.01))
-
+anchovy.register_subtask(Hover(0.8))
 
 mission = Path(
     AccelerateVector(np.array([0., 0., 0., 0., 0., 0.]), 20)
